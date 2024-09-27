@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Borrow Requests</title>
+    <style>
+        body {
+           
+            margin: 20px;
+            background-color: #f4f4f4;
+            background-image:url("wa.jpg");
+            background-repeat:no-repeat;
+             background-attachment:fixed;
+            background-size:cover; 
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            font-family: "Times new roman";
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #e6e9e6;
+        }
+        table, th, td {
+            border: 1px solid #2e7697;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color:  #276785;
+        }
+        .status-pending {
+            color: orange;
+            font-weight: bold;
+        }
+        .status-approved {
+            color: green;
+            font-weight: bold;
+        }
+        .status-rejected {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Your Pending Borrow Requests</h1>
+
+    <!-- Replace the following table rows with dynamic content from your backend -->
+    <table>
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example of a pending request -->
+            <tr>
+                <td>1</td>
+                <td>The Great Gatsby</td>
+                <td>F. Scott Fitzgerald</td>
+                <td class="status-pending">Pending</td>
+            </tr>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

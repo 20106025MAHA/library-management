@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Books - Hindusthan Library</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        .form-container input, .form-container button {
+            padding: 10px;
+            margin: 5px;
+            width: 48%;
+        }
+        .form-container input[type="text"] {
+            width: calc(48% - 20px);
+        }
+        .form-container button {
+            width: calc(48% + 20px);
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #218838;
+        }
+        .edit-btn, .delete-btn {
+            background-color: #ffc107;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Books</h1>
+        
+        <div class="form-container">
+            <input type="text" id="bookTitle" placeholder="Book Title">
+            <input type="text" id="bookAuthor" placeholder="Author">
+            <input type="text" id="bookQuantity" placeholder="Quantity">
+            <button onclick="addBook()">Add Book</button>
+        </div>
+
+        <table id="booksTable">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Books will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let books = [];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchBooks();
+        });
+
+        function fetchBooks() {
+            if (localStorage.getItem('books')) {
+                books = JSON.parse(localStorage.getItem('books'));
+            } else {
+                books = []; // Or fetch from server if needed
+            }
+            displayBooks();
+        }
+
+        function addBook() {
+            const title = document.getElementById('bookTitle').value;
+            const author = document.getElementById('bookAuthor').value;
+            const quantity = document.getElementById('bookQuantity').value;
+
+            if (title && author && quantity) {
+                const newBook = { title, author, quantity };
+                books.push(newBook);
+                updateLocalStorage();
+                displayBooks();
+                clearForm();
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+
+        function updateLocalStorage() {
+            localStorage.setItem('books', JSON.stringify(books));
+        }
+
+        function displayBooks() {
+            const booksTable = document.getElementById('booksTable').getElementsByTagName('tbody')[0];
+            booksTable.innerHTML = '';
+
+            books.forEach((book, index) => {
+                const row = booksTable.insertRow();
+
+                row.insertCell(0).innerText = book.title;
+                row.insertCell(1).innerText = book.author;
+                row.insertCell(2).innerText = book.quantity;
+
+                const actionsCell = row.insertCell(3);
+                actionsCell.innerHTML = `
+                    <button class="edit-btn" onclick="editBook(${index})">Edit</button>
+                    <button class="delete-btn" onclick="deleteBook(${index})">Delete</button>
+                `;
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('bookAuthor').value = '';
+            document.getElementById('bookQuantity').value = '';
+        }
+
+        function editBook(index) {
+            const book = books[index];
+
+            document.getElementById('bookTitle').value = book.title;
+            document.getElementById('bookAuthor').value = book.author;
+            document.getElementById('bookQuantity').value = book.quantity;
+            books.splice(index, 1);
+            updateLocalStorage();
+            displayBooks();
+        }
+
+        function deleteBook(index) {
+            books.splice(index, 1);
+            updateLocalStorage();
+            displayBooks();
+        }
+    </script>
+</body>
+</html>

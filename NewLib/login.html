@@ -1,0 +1,101 @@
+<html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+   <style>
+    body {
+    font-family: "Times New Roman";
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    background-image: url("y.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    }
+    h{
+    color: rgb(7, 1, 1);
+    font-size: 50px;
+    font-family: "Times New Roman";
+    }
+    .container {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+    text-align: center;
+    }
+
+    .login-form, .create-account-form {
+    display: flex;
+    flex-direction: column;
+    }
+
+    input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    }
+
+    button {
+    padding: 10px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.error-message {
+    color: #dc3545;
+    text-align: center;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+   </style>>
+</head>
+<body>
+    <h>Hindusthan Institute of Technology</h>
+    <div class="container">
+        <h1>Login</h1>
+        <div class="login-form">   
+            <input type="text" id="loginUsername" placeholder="Username">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <a href="homepage.html"> <button>Login</button></a>
+            <p id="loginError" class="error-message"></p>
+            <p>Don't have an account? <a href="javascript:showCreateAccountForm()">Create one</a></p>
+        </div>
+        <div class="create-account-form" style="display: none;">
+            <h2>Create Account</h2>
+            <input type="text" id="createUsername" placeholder="Username">
+            <input type="password" id="createPassword" placeholder="Password">
+            <input type="email" id="createmailid" placeholder="Mail ID">
+            <button onclick="createAccount()">Create Account</button>
+            <p id="createError" class="error-message"></p>
+            <p>Already have an account? <a href="javascript:showLoginForm()">Login</a></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

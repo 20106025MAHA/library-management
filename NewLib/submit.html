@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>
+            submit books
+        </title>
+    </head>
+    <style>
+         body {
+            font-family: "Times new roman";
+            margin: 20px;
+            background-color: #f4f4f4;
+            background-image:url("gt.jpg");
+            background-repeat:no-repeat;
+             background-attachment:fixed;
+            background-size:cover;
+        }
+        h1 {
+            text-align: center;
+            color: #f3eeee;
+            font-size: 50px;
+            padding: 50px;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="date"],
+        .form-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .form-container input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <body>
+        
+<h1>Submit The book</h1>
+
+<div class="form-container">
+    <form action="/submit_borrowed_book" method="post">
+        
+        <input type="text" id="borrowerName" name="borrowerName" placeholder="Enter your name" required>      
+        <input type="text" id="bookTitle" name="bookTitle" placeholder="Enter the title of the book" required>
+       <input type="date" id="borrowDate" name="borrowDate" required>
+
+        <input type="submit" value="Submit">
+    </form>
+</div>
+<script>
+    function submitBook() {
+        event.preventDefault(); 
+        const bookTitle = document.getElementById('bookTitle').value;
+        const borrowerName = document.getElementById('borrowerName').value;
+        const message = `The book "${bookTitle}" has been successfully submitted by ${borrowerName}.`;  
+        document.getElementById('confirmationMessage').innerText = message;
+        document.getElementById('submitForm').reset();
+        return false;
+    }
+</script>
+
+   </body>
+</html>

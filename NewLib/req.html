@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Borrowed Books</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      body {
+           
+           margin: 20px;
+           background-color: #f4f4f4;
+       }
+       h1 {
+           color: #333;
+           text-align: center;
+           font-family: "Times new roman";
+       }
+       table {
+           width: 100%;
+           border-collapse: collapse;
+           margin-top: 20px;
+           background-color: #e0e6af;
+       }
+      
+       th, td {
+           padding: 10px;
+           text-align: left;
+       }
+       th {
+           background-color:  #f5f10b;
+       }  
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1> Book Requests</h1>
+        
+        <!-- Table to display the status of borrowed books -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Book Title</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="requestTable">
+                <!-- Requests will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchBorrowRequests();
+        });
+
+        function fetchBorrowRequests() {
+            const requestTable = document.getElementById("requestTable");
+            const requests = localStorage.getItem('borrowRequests') ? JSON.parse(localStorage.getItem('borrowRequests')) : [];
+
+            requestTable.innerHTML = ""; // Clear previous data
+
+            requests.forEach((request, index) => {
+                const row = requestTable.insertRow();
+                row.insertCell(0).innerText = request.id;
+                row.insertCell(1).innerText = request.title;
+                row.insertCell(2).innerText = request.status;
+                row.insertCell(3).innerHTML = `
+                    <button class="btn btn-success mr-2" onclick="updateRequestStatus(${index}, 'Approved')">Approve</button>
+                    <button class="btn btn-danger" onclick="updateRequestStatus(${index}, 'Rejected')">Reject</button>
+                `;
+            });
+        }
+
+        function updateRequestStatus(index, status) {
+            let requests = localStorage.getItem('borrowRequests') ? JSON.parse(localStorage.getItem('borrowRequests')) : [];
+            requests[index].status = status;
+            localStorage.setItem('borrowRequests', JSON.stringify(requests));
+            fetchBorrowRequests();
+            alert(`Request has been ${status.toLowerCase()}.`);
+        }
+    </script>
+</body>
+</html>

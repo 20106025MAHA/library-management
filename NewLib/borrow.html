@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        input[type="date"] {
+            padding: 10px;
+            font-size: 16px;
+            width: calc(100% - 20px);
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+        }
+        a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Borrow a Book</h1>
+        <p>Please select a return date:</p>
+        <input type="date" id="returnDate" required>
+        <button onclick="submitRequest()">Submit Request</button>
+        <p id="confirmationMessage" style="display:none;">Your borrow request has been sent to the admin.</p>
+        <a href="search.html">Go Back to Book List</a>
+    </div>
+
+    <script>
+        function submitRequest() {
+            const returnDate = document.getElementById('returnDate').value;
+            if (!returnDate) {
+                alert('Please select a return date.');
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const title = urlParams.get('title');
+            const author = urlParams.get('author');
+            const requestId = urlParams.get('id');
+
+            const borrowRequest = {
+                id: requestId,
+                title: title,
+                author: author,
+                returnDate: returnDate,
+                status: 'Pending'
+            };
+
+            // Add the borrow request to localStorage (simulate sending to the admin)
+            let requests = localStorage.getItem('borrowRequests') ? JSON.parse(localStorage.getItem('borrowRequests')) : [];
+            requests.push(borrowRequest);
+            localStorage.setItem('borrowRequests', JSON.stringify(requests));
+
+            // Display confirmation message and notify the admin
+            document.getElementById('confirmationMessage').style.display = 'block';
+            notifyAdmin(borrowRequest);
+        }
+
+        function notifyAdmin(request) {
+            // Simulate sending a notification to the admin
+            // In a real application, this would involve sending the request to a server or admin's email
+            console.log('Notification sent to admin:', request);
+            alert('Notification sent to admin.');
+        }
+    </script>
+</body>
+</html>

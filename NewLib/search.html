@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            font-family:"Times New Roman";
+            text-align: center;
+            color: #333;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-container input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .search-container button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        button {
+        padding: 10px;
+        background-color: #28a745;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Books</h1>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Enter book title or author">
+        <button onclick="searchBooks()">Search</button>
+    </div>
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Results will be displayed here -->
+        </tbody>
+    </table>
+
+    <script>
+        let books = [];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchBooks();
+        });
+
+        function fetchBooks() {
+            if (localStorage.getItem('books')) {
+                books = JSON.parse(localStorage.getItem('books'));
+            } else {
+                books = []; // Or fetch from server if needed
+            }
+            displayAllBooks();
+        }
+
+        function searchBooks() {
+            const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+            const resultTable = document.getElementById("resultTable").getElementsByTagName("tbody")[0];
+            resultTable.innerHTML = ""; // Clear previous results
+
+            books.forEach((book, index) => {
+                if (book.title.toLowerCase().includes(searchQuery) || book.author.toLowerCase().includes(searchQuery)) {
+                    const row = resultTable.insertRow();
+                    row.insertCell(0).innerText = book.title;
+                    row.insertCell(1).innerText = book.author;
+                    row.insertCell(2).innerText = book.quantity;
+                    row.insertCell(3).innerHTML = `<button onclick="borrowBook(${index})">Borrow</button>`;
+                }
+            });
+
+            if (resultTable.rows.length === 0) {
+                const row = resultTable.insertRow();
+                const cell = row.insertCell(0);
+                cell.colSpan = 4;
+                cell.innerText = "No results found";
+                cell.style.textAlign = "center";
+            }
+        }
+
+        function displayAllBooks() {
+            const resultTable = document.getElementById("resultTable").getElementsByTagName("tbody")[0];
+            resultTable.innerHTML = ""; // Clear previous results
+
+            books.forEach((book, index) => {
+                const row = resultTable.insertRow();
+                row.insertCell(0).innerText = book.title;
+                row.insertCell(1).innerText = book.author;
+                row.insertCell(2).innerText = book.quantity;
+                row.insertCell(3).innerHTML = `<button onclick="borrowBook(${index})">Borrow</button>`;
+            });
+        }
+
+        function borrowBook(index) {
+            if (books[index].quantity > 0) {
+                const requestId = Date.now();
+                const borrowedBook = {
+                    id: requestId,
+                    title: books[index].title,
+                    author: books[index].author,
+                    status: 'Pending'
+                };
+
+                let requests = localStorage.getItem('borrowRequests') ? JSON.parse(localStorage.getItem('borrowRequests')) : [];
+                requests.push(borrowedBook);
+                localStorage.setItem('borrowRequests', JSON.stringify(requests));
+
+                books[index].quantity--;
+                localStorage.setItem('books', JSON.stringify(books));
+                displayAllBooks();
+
+                // Redirect to the borrow confirmation page with book details
+                window.location.href = `borrow.html?title=${encodeURIComponent(books[index].title)}&author=${encodeURIComponent(books[index].author)}&id=${requestId}`;
+            } else {
+                alert('Sorry, this book is out of stock.');
+            }
+        }
+    </script>
+</body>
+</html>
